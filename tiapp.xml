@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ti:app xmlns:ti="http://ti.appcelerator.org">
+    <property name="acs-oauth-secret-production" type="string">QOJliPBlnizoLD5zNw2tvSb6oBq003vR</property>
+    <property name="acs-oauth-key-production" type="string">puO9b4E73IbRsBN2IyWk7M4WeVsoQniW</property>
+    <property name="acs-api-key-production" type="string">dQRz7jGSf84My6yODxgMgidfRLM9apb4</property>
+    <property name="acs-oauth-secret-development" type="string">VNsDjMzaxH8SGf7HY2W99VCItM7NRXOD</property>
+    <property name="acs-oauth-key-development" type="string">FVP0IDivN2rdu1a3MzH53dhBu7cwZRD9</property>
+    <property name="acs-api-key-development" type="string">TprI1SnncUXe4CmFUi9mcMDWqRBrchTM</property>
+    <deployment-targets>
+        <target device="mobileweb">false</target>
+        <target device="iphone">false</target>
+        <target device="ipad">false</target>
+        <target device="android">true</target>
+        <target device="blackberry">false</target>
+    </deployment-targets>
+    <sdk-version>2.1.0.GA</sdk-version>
+    <id>no.mytss.mikkelsolberg</id>
+    <name>sangfundet v2</name>
+    <version>1.0</version>
+    <publisher>Mikkel</publisher>
+    <url>http://</url>
+    <description>not specified</description>
+    <copyright>2012 by Mikkel</copyright>
+    <icon>appicon.png</icon>
+    <persistent-wifi>false</persistent-wifi>
+    <prerendered-icon>false</prerendered-icon>
+    <statusbar-style>default</statusbar-style>
+    <statusbar-hidden>false</statusbar-hidden>
+    <fullscreen>false</fullscreen>
+    <navbar-hidden>false</navbar-hidden>
+    <analytics>true</analytics>
+    <guid>d2ce0724-a5c4-4328-9374-ef18adf4ab1f</guid>
+    <property name="ti.ui.defaultunit">system</property>
+    <iphone>
+        <orientations device="iphone">
+            <orientation>Ti.UI.PORTRAIT</orientation>
+        </orientations>
+        <orientations device="ipad">
+            <orientation>Ti.UI.PORTRAIT</orientation>
+            <orientation>Ti.UI.UPSIDE_PORTRAIT</orientation>
+            <orientation>Ti.UI.LANDSCAPE_LEFT</orientation>
+            <orientation>Ti.UI.LANDSCAPE_RIGHT</orientation>
+        </orientations>
+    </iphone>
+    <android xmlns:android="http://schemas.android.com/apk/res/android"/>
+    <mobileweb>
+        <precache/>
+        <splash>
+            <enabled>true</enabled>
+            <inline-css-images>true</inline-css-images>
+        </splash>
+        <theme>default</theme>
+    </mobileweb>
+    <modules>
+        <module platform="commonjs" version="2.1.0">ti.cloud</module>
+    </modules>
+</ti:app>
