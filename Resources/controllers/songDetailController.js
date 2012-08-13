@@ -23,6 +23,7 @@ exports.create = function(Cloud, song) {
 
 	handlefavoriteButton.call(self);
 	handleBackButton.call(self);
+	handleOrientationChange.call(self);
 	return self;
 }
 open = function() {
@@ -32,21 +33,49 @@ close = function() {
 	this.Window.close();
 }
 handlefavoriteButton = function() {
+	var Songs = require('/files/songs');
 	this.Window.favoriteButton.addEventListener('click', function(e) {
-		isFavorite = require('/lib/properties').toggleFavorite(e.source.songTitle);
+		Ti.API.info('Fav-button: CLICK');
+		isFavorite = Songs.toggleFavorite(e.source.songTitle);
 		e.source.backgroundImage = isFavorite ? '/images/star_disable_icon.png' : '/images/star_icon.png';
 	});
 
 	this.Window.downloadButton.addEventListener('click', function(e) {
-		available = require('/lib/properties').toggleAvailableOffline(e.source.songTitle);
-		e.source.backgroundImage = available ? '/images/download_disable_icon3.png' : '/images/download_icon.png';
+		Ti.API.info('Download-button: CLICK');
+
+		if (!Songs.isAvailableOffline(e.source.songTitle)) {
+			//The song must be downloaded
+			Ti.App.addEventListener('ui:downloadComplete', function(f) {
+				downloadCompleted(e.source);
+			});
+		} 
+
+		var available = Songs.toggleAvailableOffline(e.source.songTitle);
+		e.source.backgroundImage = available ? '/images/download_disable_icon3.png' : '/images/download_icon3.png';
+	});
+
+	this.Window.openButton.addEventListener('click', function(e) {
+		Songs.openSong(e.source.songTitle);
 	});
 }
-
-handleBackButton = function(){
-	this.Window.addEventListener('android:back', function(e){
+downloadCompleted = function(button) {
+	Ti.API.info('songDetail: Event : download complete');
+	button.backgroundImage = '/images/download_disable_icon3.png';
+	Ti.App.removeEventListener('ui:downloadComplete', downloadCompleted);
+}
+handleBackButton = function() {
+	this.Window.addEventListener('android:back', function(e) {
 		Ti.App.fireEvent('app:navigation', {
 			navigation : 'songList',
 		});
+	});
+}
+handleOrientationChange = function() {
+	var Window = this.Window;
+	Ti.App.addEventListener('app:orientation:songDetailWindow', function(e) {
+		var screenWidth = Ti.Platform.displayCaps.platformWidth;
+		Window.favoriteButton.left = (screenWidth - 4 * 55) / 5;
+		Window.downloadButton.left = (screenWidth - 4 * 55) / 5;
+		Window.openButton.left = (screenWidth - 4 * 55) / 5;
 	});
 }

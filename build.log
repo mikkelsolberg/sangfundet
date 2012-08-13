@@ -5,12 +5,12 @@ Logfile initialized
 [DEBUG] Waiting for device to be ready ...
 [TRACE] adb devices returned 1 devices/emulators
 [DEBUG] Device connected... (waited 0 seconds)
-[DEBUG] waited 0.036000 seconds on emulator to get ready
+[DEBUG] waited 0.035000 seconds on emulator to get ready
 [DEBUG] no.mytss.mikkelsolberg installed? False
 [INFO] Copying CommonJS modules...
 [INFO] Copying project resources..
+[TRACE] COPYING MODIFIED FILE: C:\Users\Mikkel\My Documents\Titanium_Studio_Workspace\sangfundet v2\Resources\controllers\mainController.js => C:\Users\Mikkel\My Documents\Titanium_Studio_Workspace\sangfundet v2\build\android\bin\assets\Resources\controllers\mainController.js
 [TRACE] COPYING MODIFIED FILE: C:\Users\Mikkel\My Documents\Titanium_Studio_Workspace\sangfundet v2\Resources\controllers\songDetailController.js => C:\Users\Mikkel\My Documents\Titanium_Studio_Workspace\sangfundet v2\build\android\bin\assets\Resources\controllers\songDetailController.js
-[TRACE] COPYING MODIFIED FILE: C:\Users\Mikkel\My Documents\Titanium_Studio_Workspace\sangfundet v2\Resources\ui\handheld\songDetailWindow.js => C:\Users\Mikkel\My Documents\Titanium_Studio_Workspace\sangfundet v2\build\android\bin\assets\Resources\ui\handheld\songDetailWindow.js
 [TRACE] Generating Java Classes
 [DEBUG] Processing Android resource drawables
 [DEBUG] copying app icon: C:\Users\Mikkel\My Documents\Titanium_Studio_Workspace\sangfundet v2\build\android\bin\assets\Resources\appicon.png
@@ -29,7 +29,6 @@ Logfile initialized
 [DEBUG] from resource zip => assets/Resources/controllers/songDetailController.js
 [DEBUG] from resource zip => assets/Resources/controllers/songTableController.js
 [DEBUG] from resource zip => assets/Resources/files/songs.js
-[DEBUG] from resource zip => assets/Resources/files/test.txt
 [DEBUG] from resource zip => assets/Resources/images/KS_nav_ui.png
 [DEBUG] from resource zip => assets/Resources/images/KS_nav_views.png
 [DEBUG] from resource zip => assets/Resources/images/download_disable_icon3.png
@@ -38,11 +37,11 @@ Logfile initialized
 [DEBUG] from resource zip => assets/Resources/images/download_icon3.png
 [DEBUG] from resource zip => assets/Resources/images/male.png
 [DEBUG] from resource zip => assets/Resources/images/pdf_icon.png
+[DEBUG] from resource zip => assets/Resources/images/pdf_icon2.png
 [DEBUG] from resource zip => assets/Resources/images/star_disable_icon.png
 [DEBUG] from resource zip => assets/Resources/images/star_icon.png
 [DEBUG] from resource zip => assets/Resources/images/star_icon2.png
 [DEBUG] from resource zip => assets/Resources/lib/network.js
-[DEBUG] from resource zip => assets/Resources/lib/properties.js
 [DEBUG] from resource zip => assets/Resources/lib/ti.cloud.js
 [DEBUG] from resource zip => assets/Resources/ui/common/ApplicationTabGroup.js
 [DEBUG] from resource zip => assets/Resources/ui/common/table.js
@@ -86,6 +85,5 @@ Logfile initialized
 [DEBUG] Waiting for device to be ready ...
 [TRACE] adb devices returned 1 devices/emulators
 [DEBUG] Device connected... (waited 0 seconds)
-[DEBUG] waited 0.061000 seconds on emulator to get ready
+[DEBUG] waited 0.035000 seconds on emulator to get ready
 [INFO] Installing application on device
-[INFO] Application installed. Launch from drawer on Home Screen

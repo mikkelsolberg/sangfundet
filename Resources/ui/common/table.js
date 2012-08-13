@@ -20,11 +20,9 @@ var TableView = function(sanger) {
 	self.update = update;
 	return self;
 }
-
-update = function(sanger){
+update = function(sanger) {
 	this.setData(createRows(sanger));
 }
-
 createRows = function(sanger) {
 	tableRowHeight = 60;
 	rowContainerHeight = tableRowHeight - 4;
@@ -82,7 +80,7 @@ createRows = function(sanger) {
 		});
 
 		//Add star if favorite
-		var isFavorite = require('/lib/properties').isFavorite(sanger[i].title);
+		var isFavorite = require('/files/songs').isFavorite(sanger[i].cloudName);
 		if (isFavorite) {
 			var starView = Ti.UI.createImageView({
 				height : 40,
@@ -101,6 +99,7 @@ createRows = function(sanger) {
 		row.container = container;
 		row.cloudName = sanger[i].cloudName;
 		row.song = sanger[i];
+
 		rows.push(row);
 	}
 

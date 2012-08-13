@@ -1,5 +1,5 @@
 /**
- * 
+ *
  * @param {Object} Cloud - Object holding the cloud data
  */
 exports.create = function(Cloud) {
@@ -19,8 +19,6 @@ exports.create = function(Cloud) {
 
 	var ApplicationTabGroup = require('ui/common/ApplicationTabGroup');
 	self.tabGroup = new ApplicationTabGroup(Window);
-
-	Ti.API.info('Setter opp cloud');
 
 	self.Cloud = Cloud;
 	self.open = open;
@@ -63,19 +61,7 @@ startDownloadedTableListener = function() {
 		Ti.API.info('Click: #' + e.row);
 		Ti.API.info('Cloud ' + Cloud);
 		Ti.API.info('Cloud ' + JSON.stringify(Cloud));
-		Cloud.Files.query({
-			where : {
-				name : e.row.song.cloudName
-			},
-		}, function(f) {
-			if (f.success) {
-				var file = f.files[0];
-				Ti.API.info('FIL:' + JSON.stringify(file));
-				Ti.API.info('URL' + file.url);
-				require('/lib/network').downloadFile(file.url, file.name);
-			}
-		});
-		//end query
+		require('/files/songs').openSong(e.row.cloudName);
 	});
 	//end eventListener
 }

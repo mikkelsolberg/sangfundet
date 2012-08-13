@@ -10,6 +10,7 @@ var MainController = function() {
 		Ti.Platform.openURL(e.filepath);
 	});
 	Cloud = initializeCloud();
+	detectNetworkChange(Cloud);
 	songTableController = require('/controllers/songTableController').create(Cloud);
 	songTableController.open();
 	Ti.App.addEventListener('app:navigation', function(e) {
@@ -30,18 +31,53 @@ initializeCloud = function() {
 	var Cloud = require('/lib/ti.cloud');
 	Cloud.debug = true;
 	Cloud.Users.login({
-		login : 'teste',
-		password : 'teste',
+		login : 'korist',
+		password : 'korist',
 	}, function(e) {
 		if (e.success) {
 			Ti.API.info('CloudMain ' + JSON.stringify(Cloud));
 			var user = e.users[0];
-			alert('Logged in! You are now logged in as ' + user.id);
+			// alert('Logged in! You are now logged in as ' + user.username);
+			createAltertBox('Logget inn', 'Du har logget inn som ' + user.username);
 		} else {
 			Ti.API.info(JSON.stringify(e));
-			alert('Error');
+			createAltertBox('Feil', 'Klarte ikke å logge inn. Sjekk internettforbindelsen');
 		}
 	});
 	return Cloud;
 }
+
+detectNetworkChange = function(Cloud){
+	Ti.Network.addEventListener('change', function(e){
+		Ti.API.info(' ===================================================');
+		Ti.API.info(' ================= NETTVERKSENDRING! ===============');
+		Ti.API.info(' ===================================================');
+	});
+}
+
+createAltertBox = function(title, text) {
+	view = Ti.UI.createView({
+		left : 10,
+		right : 10,
+		
+	});
+
+	textLabel = Ti.UI.createLabel({
+		text : text,
+		color : 'white',
+		font : {
+			fontSize : 18,
+		}
+	});
+	view.add(textLabel);
+
+	var alertDialog = Ti.UI.createAlertDialog({
+		title : title,
+		androidView : view,
+		buttonNames : ['OK'],
+		cancel : 0,
+	});
+	alertDialog.show();
+}
+
 module.exports = MainController;

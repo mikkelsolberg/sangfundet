@@ -1,5 +1,5 @@
 /**
- * @author Mikkel
+ * @author Mikkel Solberg
  */
 
 var SongDetailWindow = function(song) {
@@ -35,8 +35,9 @@ var SongDetailWindow = function(song) {
 		layout : 'horizontal',
 	});
 
+	isFavorite = require('/files/songs').isFavorite(song.cloudName);
 	var favoriteButton = Ti.UI.createButton({
-		backgroundImage : '/images/star_icon.png',
+		backgroundImage : isFavorite ? '/images/star_disable_icon.png' : '/images/star_icon.png',
 		backgroundColor : 'gray',
 		borderColor : 'black',
 		borderWidth : 3,
@@ -45,36 +46,65 @@ var SongDetailWindow = function(song) {
 		height : 50,
 		left : (screenWidth - 4 * 50) / 5,
 		top : 5,
-		songTitle : song.title,
+		songTitle : song.cloudName,
 	});
 
 	favoriteButton.addEventListener('touchstart', function(e) {
+		Ti.API.info('Fav-button: TOUCHSTART');
 		e.source.backgroundColor = 'orange';
 	});
 	favoriteButton.addEventListener('touchend', function(e) {
+		Ti.API.info('Fav-button: TOUCHEND');
 		e.source.backgroundColor = 'gray';
 	});
 
 	buttonBar.add(favoriteButton);
 
+	isAvailableOffline = require('/files/songs').isAvailableOffline(song.cloudName);
 	var downloadButton = Ti.UI.createButton({
-		image : '/images/download_icon3.png',
+		backgroundImage : isAvailableOffline ? '/images/download_disable_icon3.png' : '/images/download_icon3.png',
+		backgroundColor : 'gray',
+		borderColor : 'black',
+		borderWidth : 3,
+		borderRadius : 10,
 		width : 55,
 		height : 50,
 		left : (screenWidth - 4 * 50) / 5,
 		top : 5,
-		songTitle : song.title,
+		songTitle : song.cloudName,
+	});
+	downloadButton.addEventListener('touchstart', function(e) {
+		Ti.API.info('downloadButton: TOUCHSTART');
+		e.source.backgroundColor = 'orange';
+	});
+	downloadButton.addEventListener('touchend', function(e) {
+		Ti.API.info('downloadButton: TOUCHEND');
+		e.source.backgroundColor = 'gray';
 	});
 	buttonBar.add(downloadButton);
 
 	var openButton = Ti.UI.createButton({
-		image : '/images/pdf_icon.png',
+		image : '/images/pdf_icon2.png',
+		backgroundColor : 'gray',
+		borderColor : 'black',
+		borderWidth : 3,
+		borderRadius : 10,
 		width : 55,
 		height : 50,
 		left : (screenWidth - 4 * 50) / 5,
 		top : 5,
-		songTitle : song.title,
+		songTitle : song.cloudName,
 	});
+
+	openButton.addEventListener('touchstart', function(e) {
+		Ti.API.info('openButton: TOUCHSTART');
+		e.source.backgroundColor = 'orange';
+	});
+	openButton.addEventListener('touchend', function(e) {
+		Ti.API.info('openButton: TOUCHEND');
+		e.source.backgroundColor = 'gray';
+	});
+
 	buttonBar.add(openButton);
 
 	self.favoriteButton = favoriteButton;
@@ -104,10 +134,7 @@ var SongDetailWindow = function(song) {
 	return self;
 }
 onOrientationChange = function(e) {
-	screenWidth = Ti.Platform.displayCaps.platformWidth;
-	e.source.favoriteButton.left = (screenWidth - 4 * 55) / 5;
-	e.source.downloadButton.left = (screenWidth - 4 * 55) / 5;
-	e.source.openButton.left = (screenWidth - 4 * 55) / 5;
+	Ti.App.fireEvent('app:orientation:songDetailWindow');
 }
 
 module.exports = SongDetailWindow;
