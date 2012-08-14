@@ -307,7 +307,6 @@ downloadComplete = function(file) {
 	Ti.App.fireEvent('ui:downloadComplete', {
 		cloudName : file.cloudName,
 	});
-
 }
 
 exports.getAvailableOfflines = getAvailableOfflines;

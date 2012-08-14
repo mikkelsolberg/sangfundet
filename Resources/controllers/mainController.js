@@ -30,6 +30,7 @@ var MainController = function() {
 initializeCloud = function() {
 	var Cloud = require('/lib/ti.cloud');
 	Cloud.debug = true;
+	Cloud.online = Ti.Network.online;
 	Cloud.Users.login({
 		login : 'korist',
 		password : 'korist',
@@ -46,23 +47,27 @@ initializeCloud = function() {
 	});
 	return Cloud;
 }
-
-detectNetworkChange = function(Cloud){
-	Ti.Network.addEventListener('change', function(e){
-		Ti.API.info(' ===================================================');
-		Ti.API.info(' ================= NETTVERKSENDRING! ===============');
-		Ti.API.info(' ===================================================');
-	});
+detectNetworkChange = function(Cloud) {
+	setInterval(function() {
+		if (Ti.Network.online != Cloud.online) {
+			Ti.API.info(' ===================================================');
+			Ti.API.info(' ================= NETTVERKSENDRING! ===============');
+			Ti.API.info(' ===================================================');
+			initializeCloud();
+			Cloud.online = Ti.Network.online;
+		}
+	}, 1000);
 }
-
 createAltertBox = function(title, text) {
 	view = Ti.UI.createView({
-		left : 10,
-		right : 10,
-		
+		// left : 10,
+		// right : 10,
+
 	});
 
 	textLabel = Ti.UI.createLabel({
+		left : 10,
+		right : 10,
 		text : text,
 		color : 'white',
 		font : {

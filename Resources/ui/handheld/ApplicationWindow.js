@@ -1,10 +1,12 @@
 function ApplicationWindow(title) {
+	Ti.API.info('Creating tabbed window for tables');
+	
 	var self = Ti.UI.createWindow({
 		title : title,
 		backgroundColor : '#8F6CD7', // Lys blå fra myTss,
 		exitOnClose : true,
 	});
-
+	
 	var Songs = require('/files/songs');
 	var songs = Songs.getSongs();
 

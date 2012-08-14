@@ -120,6 +120,9 @@ var SongDetailWindow = function(song) {
 
 	self.add(toolbar);
 	self.add(buttonBar);
+	pb = setupProgressBar();
+	self.add(pb);
+	pb.show();
 	self.add(mainView);
 
 	//Reload the menu on changing of orientation
@@ -135,6 +138,33 @@ var SongDetailWindow = function(song) {
 }
 onOrientationChange = function(e) {
 	Ti.App.fireEvent('app:orientation:songDetailWindow');
+}
+setupProgressBar = function() {
+	var progressBar = Ti.UI.createProgressBar({
+		bottom : 10,
+		width : 250,
+		height : 200,
+		min : 0,
+		max : 1,
+		value : 0,
+		color : '#fff',
+		zindex : 1,
+		message : 'Laster ned',
+		font : {
+			fontSize : 20,
+			fontWeight : 'bold'
+		},
+	});
+
+	updateProgressBar = function(e) {
+		Ti.API.info('Updating progress bar');
+
+		progressBar.value = e.progress;
+	};
+	//TODO cloudname inn i  eventnavn
+	Ti.App.addEventListener('download:progress', updateProgressBar);
+
+	return progressBar;
 }
 
 module.exports = SongDetailWindow;

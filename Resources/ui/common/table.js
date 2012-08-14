@@ -24,6 +24,7 @@ update = function(sanger) {
 	this.setData(createRows(sanger));
 }
 createRows = function(sanger) {
+	var Songs = require('/files/songs');
 	tableRowHeight = 60;
 	rowContainerHeight = tableRowHeight - 4;
 	var rows = [];
@@ -31,6 +32,8 @@ createRows = function(sanger) {
 	for (var i = 0; i < sanger.length; i++) {
 		var row = Ti.UI.createTableViewRow({
 			height : tableRowHeight,
+			touchEnabled : false,
+			enabled : false,
 			// borderWidth : 8,
 			// borderColor : '#888888',
 			// borderRadius : 8,
@@ -38,6 +41,7 @@ createRows = function(sanger) {
 		});
 
 		var container = Ti.UI.createView({
+			top : 0,
 			height : rowContainerHeight,
 			backgroundColor : '#290671',
 			borderColor : 'transparent',
@@ -55,6 +59,8 @@ createRows = function(sanger) {
 			font : {
 				fontSize : 20,
 			},
+			touchEnabled : false,
+			enabled : false,
 			// backgroundColor : 'red',
 		});
 
@@ -62,6 +68,8 @@ createRows = function(sanger) {
 			right : 20,
 			width : Ti.UI.SIZE,
 			layout : 'horizontal',
+			touchEnabled : false,
+			enabled : false,
 		});
 
 		voices = getVoicesAsString(sanger[i].voices);
@@ -76,19 +84,23 @@ createRows = function(sanger) {
 			font : {
 				fontSize : 20,
 			},
+			touchEnabled : false,
+			enabled : false,
 			// backgroundColor : 'red',
 		});
 
 		//Add star if favorite
-		var isFavorite = require('/files/songs').isFavorite(sanger[i].cloudName);
+		var isFavorite = Songs.isFavorite(sanger[i].cloudName);
 		if (isFavorite) {
 			var starView = Ti.UI.createImageView({
 				height : 40,
 				width : 40,
 				top : 4,
-				image : '/images/star_icon.png'
+				image : '/images/star_icon.png',
+				touchEnabled : false,
 			});
 			rightView.add(starView);
+
 		}
 
 		container.add(titleLabel);
@@ -99,6 +111,33 @@ createRows = function(sanger) {
 		row.container = container;
 		row.cloudName = sanger[i].cloudName;
 		row.song = sanger[i];
+
+		container.addEventListener('touchstart', function(e) {
+			// Ti.API.info('ROW TOUCHSTART');
+			// Ti.API.info('e.source ' + e.source);
+			e.source.updateLayout({
+				left : 5,
+				top : 5,
+				backgroundColor : '#472B83',
+			});
+		});
+
+		container.addEventListener('touchend', function(e) {
+			Ti.API.info('ROW TOUCHEND');
+			e.source.updateLayout({
+				left : 0,
+				top : 0,
+				backgroundColor : '#290671',
+			});
+		});
+		container.addEventListener('touchcancel', function(e) {
+			Ti.API.info('ROW TOUCHCANCEL');
+			e.source.updateLayout({
+				left : 0,
+				top : 0,
+				backgroundColor : '#290671',
+			});
+		});
 
 		rows.push(row);
 	}

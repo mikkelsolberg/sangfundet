@@ -24,6 +24,7 @@ exports.create = function(Cloud, song) {
 	handlefavoriteButton.call(self);
 	handleBackButton.call(self);
 	handleOrientationChange.call(self);
+
 	return self;
 }
 open = function() {
@@ -48,7 +49,7 @@ handlefavoriteButton = function() {
 			Ti.App.addEventListener('ui:downloadComplete', function(f) {
 				downloadCompleted(e.source);
 			});
-		} 
+		}
 
 		var available = Songs.toggleAvailableOffline(e.source.songTitle);
 		e.source.backgroundImage = available ? '/images/download_disable_icon3.png' : '/images/download_icon3.png';

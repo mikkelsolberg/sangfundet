@@ -29,6 +29,7 @@ exports.create = function(Cloud) {
 	return self;
 }
 open = function() {
+	Ti.API.info('SongTableController.open()');
 	var Songs = require('/files/songs');
 	var songs = Songs.getSongs();
 	var favorites = Songs.getFavorites(songs);
@@ -50,8 +51,18 @@ startAllTableListener = function() {
 			navigation : 'songDetail',
 			song : e.row.song,
 		});
-
 	});
+
+	// this.tabGroup.allWindow.table.addEventListener('touchstart', function(e) {
+		// e.row.container.left = 5;
+		// e.row.container.top = 5;
+		// e.source.backgroundColor = '#472B83';
+	// });
+	// this.tabGroup.allWindow.table.addEventListener('touchend', function(e) {
+		// e.row.container.left = 0;
+		// e.row.container.top = 0;
+		// e.source.backgroundColor = '#290671';
+	// });
 	//end eventListener
 }
 startDownloadedTableListener = function() {
