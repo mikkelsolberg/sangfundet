@@ -279,7 +279,7 @@ downloadSong = function(cloudName, temporaryFile, openAfterDownload) {
 		if (f.success) {
 			var file = f.files[0];
 			Ti.API.info('Fant cloud FIL:' + JSON.stringify(file));
-			Ti.API.info('Ved URL' + file.url);
+			Ti.API.info('Ved URL ' + file.url);
 			var callbackFunc = openAfterDownload ? openPDF : downloadComplete;
 			require('/lib/network').downloadFile(file.url, file.name, temporaryFile, callbackFunc);
 		} else {

@@ -7,7 +7,7 @@ var SongDetailWindow = function(song) {
 
 	var self = Ti.UI.createWindow({
 		navBarHidden : true,
-		backgroundColor : '#8F6CD7', // Lys blå fra myTss
+
 		layout : 'vertical',
 	});
 
@@ -93,6 +93,7 @@ var SongDetailWindow = function(song) {
 		height : 50,
 		left : (screenWidth - 4 * 50) / 5,
 		top : 5,
+		
 		songTitle : song.cloudName,
 	});
 
@@ -114,17 +115,19 @@ var SongDetailWindow = function(song) {
 
 	//MAIN VIEW
 	var mainView = Ti.UI.createView({
-
+		backgroundColor : '#8F6CD7', // Lys blå fra myTss
 	});
 	//END MAIN VIEW
 
 	self.add(toolbar);
 	self.add(buttonBar);
-	pb = setupProgressBar();
-	self.add(pb);
-	pb.show();
-	self.add(mainView);
 
+	progressBar = setupProgressBar();
+	self.progressBar = progressBar;
+	mainView.add(progressBar);
+
+	self.add(mainView);
+	// progressBar.show();
 	//Reload the menu on changing of orientation
 	Ti.Gesture.addEventListener('orientationchange', onOrientationChange);
 
@@ -133,36 +136,39 @@ var SongDetailWindow = function(song) {
 		//remove event listener
 		Ti.Gesture.removeEventListener('orientationchange', onOrientationChange);
 	});
+	
+	// self.buttons = [];
+	// self.buttons['favorite'] = favoriteButton;
 
 	return self;
 }
+
+switchButtonIcon = function(buttonName, value){
+	if(buttonName == 'downloadButton'){
+		this.downloadButton.backgroundImage = value ? '/images/download_disable_icon3.png' : '/images/download_icon3.png';
+	}
+}
+
 onOrientationChange = function(e) {
 	Ti.App.fireEvent('app:orientation:songDetailWindow');
 }
 setupProgressBar = function() {
 	var progressBar = Ti.UI.createProgressBar({
-		bottom : 10,
+		top : 10,
 		width : 250,
-		height : 200,
+		height : 50,
 		min : 0,
 		max : 1,
 		value : 0,
 		color : '#fff',
-		zindex : 1,
+		// zindex : 1,
+		visible : false,
 		message : 'Laster ned',
 		font : {
 			fontSize : 20,
 			fontWeight : 'bold'
 		},
 	});
-
-	updateProgressBar = function(e) {
-		Ti.API.info('Updating progress bar');
-
-		progressBar.value = e.progress;
-	};
-	//TODO cloudname inn i  eventnavn
-	Ti.App.addEventListener('download:progress', updateProgressBar);
 
 	return progressBar;
 }

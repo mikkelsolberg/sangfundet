@@ -11,7 +11,7 @@ var TableView = function(sanger) {
 		width : '90%',
 		backgroundColor : '#7546D7',
 		separatorColor : 'transparent',
-		opacity : 0.25,
+		// opacity : 0.25,
 		data : rows,
 		borderColor : 'transparent',
 		borderRadius : 10,

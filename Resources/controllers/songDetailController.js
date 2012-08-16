@@ -20,21 +20,28 @@ exports.create = function(Cloud, song) {
 	self.Cloud = Cloud;
 	self.open = open;
 	self.close = close;
+	
+	
 
-	handlefavoriteButton.call(self);
+	handleButtons.call(self);
 	handleBackButton.call(self);
 	handleOrientationChange.call(self);
+	handleProgressBar.call(self);
 
 	return self;
 }
 open = function() {
+	Ti.App.addEventListener('ui:downloadComplete', downloadCompleted);
 	this.Window.open();
+	this.Window.progressBar.hide();
 }
 close = function() {
 	this.Window.close();
+	Ti.App.removeEventListener('ui:downloadComplete', downloadCompleted);
 }
-handlefavoriteButton = function() {
+handleButtons = function() {
 	var Songs = require('/files/songs');
+	progressBar = this.Window.progressBar;
 	this.Window.favoriteButton.addEventListener('click', function(e) {
 		Ti.API.info('Fav-button: CLICK');
 		isFavorite = Songs.toggleFavorite(e.source.songTitle);
@@ -43,12 +50,10 @@ handlefavoriteButton = function() {
 
 	this.Window.downloadButton.addEventListener('click', function(e) {
 		Ti.API.info('Download-button: CLICK');
-
 		if (!Songs.isAvailableOffline(e.source.songTitle)) {
 			//The song must be downloaded
-			Ti.App.addEventListener('ui:downloadComplete', function(f) {
-				downloadCompleted(e.source);
-			});
+			progressBar.show();
+			
 		}
 
 		var available = Songs.toggleAvailableOffline(e.source.songTitle);
@@ -59,8 +64,10 @@ handlefavoriteButton = function() {
 		Songs.openSong(e.source.songTitle);
 	});
 }
-downloadCompleted = function(button) {
+downloadCompleted = function(e) {
+	button = e.source;
 	Ti.API.info('songDetail: Event : download complete');
+	progressBar.hide();
 	button.backgroundImage = '/images/download_disable_icon3.png';
 	Ti.App.removeEventListener('ui:downloadComplete', downloadCompleted);
 }
@@ -79,4 +86,15 @@ handleOrientationChange = function() {
 		Window.downloadButton.left = (screenWidth - 4 * 55) / 5;
 		Window.openButton.left = (screenWidth - 4 * 55) / 5;
 	});
+}
+handleProgressBar = function() {
+	progressBar = this.Window.progressBar;
+	updateProgressBar = function(e) {
+		Ti.API.info('Updating progress bar');
+
+		progressBar.value = e.progress;
+	};
+	//TODO cloudname inn i eventnavn
+	Ti.App.addEventListener('download:progress', updateProgressBar);
+
 }
