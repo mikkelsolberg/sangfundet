@@ -3,21 +3,16 @@ var songDetailController;
 
 var MainController = function() {
 
-	Ti.App.addEventListener('pdf_downloaded', function(e) {
-		Ti.API.info('==============FILE DOWNLOAD==========');
-		Ti.API.info('File path : ' + e.filepath);
-		Ti.API.info('======================================');
-		Ti.Platform.openURL(e.filepath);
-	});
-	Cloud = initializeCloud();
-	detectNetworkChange(Cloud);
-	songTableController = require('/controllers/songTableController').create(Cloud);
+	// Cloud = initializeCloud();
+	// detectNetworkChange(Cloud);
+	var Cloud = {};
+	songTableController = require('/controllers/songTableController').create();
 	songTableController.open();
 	Ti.App.addEventListener('app:navigation', function(e) {
 		Ti.API.info('Navigation: ' + e.navigation);
 		switch(e.navigation) {
 			case 'songDetail':
-				songDetailController = require('/controllers/songDetailController').create(Cloud, e.song);
+				songDetailController = require('/controllers/songDetailController').create(e.song);
 				songDetailController.open();
 				break;
 			case 'songList':
@@ -27,26 +22,26 @@ var MainController = function() {
 		}
 	});
 }
-initializeCloud = function() {
-	var Cloud = require('/lib/ti.cloud');
-	Cloud.debug = true;
-	Cloud.online = Ti.Network.online;
-	Cloud.Users.login({
-		login : 'korist',
-		password : 'korist',
-	}, function(e) {
-		if (e.success) {
-			Ti.API.info('CloudMain ' + JSON.stringify(Cloud));
-			var user = e.users[0];
-			// alert('Logged in! You are now logged in as ' + user.username);
-			createAltertBox('Logget inn', 'Du har logget inn som ' + user.username);
-		} else {
-			Ti.API.info(JSON.stringify(e));
-			createAltertBox('Feil', 'Klarte ikke å logge inn. Sjekk internettforbindelsen');
-		}
-	});
-	return Cloud;
-}
+// initializeCloud = function() {
+	// var Cloud = require('/lib/ti.cloud');
+	// Cloud.debug = true;
+	// Cloud.online = Ti.Network.online;
+	// Cloud.Users.login({
+		// login : 'korist',
+		// password : 'korist',
+	// }, function(e) {
+		// if (e.success) {
+			// Ti.API.info('CloudMain ' + JSON.stringify(Cloud));
+			// var user = e.users[0];
+			// // alert('Logged in! You are now logged in as ' + user.username);
+			// createAltertBox('Logget inn', 'Du har logget inn som ' + user.username);
+		// } else {
+			// Ti.API.info(JSON.stringify(e));
+			// createAltertBox('Feil', 'Klarte ikke å logge inn. Sjekk internettforbindelsen');
+		// }
+	// });
+	// return Cloud;
+// }
 detectNetworkChange = function(Cloud) {
 	setInterval(function() {
 		if (Ti.Network.online != Cloud.online) {

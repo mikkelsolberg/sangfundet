@@ -23,6 +23,7 @@ exports.downloadFile = function(url, name, temporaryFile, callback) {
 			// var f = Ti.Filesystem.getFile(Ti.Filesystem.externalStorageDirectory + name + '.pdf');
 			Ti.API.info('Lastet ned PDF!');
 			f.write(this.responseData);
+			f.downloaded = true;
 			f.cloudName = name;
 			callback(f);
 			// write to the file
@@ -36,19 +37,28 @@ exports.downloadFile = function(url, name, temporaryFile, callback) {
 			Ti.API.debug('NETTVERKSFEIL' + e.error);
 			alert('error');
 		},
-		ondatastream : function(e){
+		ondatastream : function(e) {
 			Ti.API.info('Progress: ' + e.progress);
-			Ti.App.fireEvent('download:progress', {
+			Ti.App.fireEvent('app:download:progress', {
 				progress : e.progress,
+				filesize : Math.round(this.getResponseHeader('Content-Length') / 1024),
 			});
 		},
+		onreadystatechange : function(e) {
+			Ti.API.info('StateChange: ' + this.readyState);
+			if (this.readyState == 2 ) {
+				Ti.API.info('StateChange: ' + JSON.stringify(e));
+				var kb = Math.round(this.getResponseHeader('Content-Length') / 1024);
+				Ti.API.info('Filstørrelse: ' + kb + ' kb');
+			}
+		},
+
 		timeout : 3000
 	});
 	xhr.open('GET', url);
 	xhr.send();
 	Ti.API.info('======END NETWORK MODULE');
 }
-
 //Deprecated
 exports.downloadSong = function(Cloud, songCloudName, temporaryFile, open) {
 	Cloud.Files.query({

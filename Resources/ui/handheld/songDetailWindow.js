@@ -93,7 +93,7 @@ var SongDetailWindow = function(song) {
 		height : 50,
 		left : (screenWidth - 4 * 50) / 5,
 		top : 5,
-		
+
 		songTitle : song.cloudName,
 	});
 
@@ -127,50 +127,44 @@ var SongDetailWindow = function(song) {
 	mainView.add(progressBar);
 
 	self.add(mainView);
-	// progressBar.show();
-	//Reload the menu on changing of orientation
-	Ti.Gesture.addEventListener('orientationchange', onOrientationChange);
 
-	//Cleanup on close
-	self.addEventListener('close', function(e) {
-		//remove event listener
-		Ti.Gesture.removeEventListener('orientationchange', onOrientationChange);
-	});
-	
-	// self.buttons = [];
-	// self.buttons['favorite'] = favoriteButton;
+	self.downloadComplete = downloadComplete;
+	self.orientationChange = orientationChange;
 
 	return self;
 }
-
-switchButtonIcon = function(buttonName, value){
-	if(buttonName == 'downloadButton'){
+switchButtonIcon = function(buttonName, value) {
+	if (buttonName == 'downloadButton') {
 		this.downloadButton.backgroundImage = value ? '/images/download_disable_icon3.png' : '/images/download_icon3.png';
 	}
 }
 
-onOrientationChange = function(e) {
-	Ti.App.fireEvent('app:orientation:songDetailWindow');
+orientationChange = function() {
+	var screenWidth = Ti.Platform.displayCaps.platformWidth;
+	this.favoriteButton.left = (screenWidth - 4 * 55) / 5;
+	this.downloadButton.left = (screenWidth - 4 * 55) / 5;
+	this.openButton.left = (screenWidth - 4 * 55) / 5;
 }
+
 setupProgressBar = function() {
 	var progressBar = Ti.UI.createProgressBar({
 		top : 10,
 		width : 250,
-		height : 50,
+		height : 100,
 		min : 0,
 		max : 1,
 		value : 0,
-		color : '#fff',
+		// color : '#fff',
 		// zindex : 1,
 		visible : false,
 		message : 'Laster ned',
-		font : {
-			fontSize : 20,
-			fontWeight : 'bold'
-		},
 	});
 
 	return progressBar;
+}
+downloadComplete = function() {
+	this.progressBar.hide();
+	this.downloadButton.backgroundImage = '/images/download_disable_icon3.png';
 }
 
 module.exports = SongDetailWindow;
