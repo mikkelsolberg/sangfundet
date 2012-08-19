@@ -15,7 +15,7 @@
 	</deployment-targets>
 	<sdk-version>2.1.1.GA</sdk-version>
 	<id>no.mytss.mikkelsolberg</id>
-	<name>sangfundet</name>
+	<name>Sangfundet</name>
 	<version>0.2</version>
 	<publisher>Mikkel Solberg</publisher>
 	<url>http://</url>
@@ -27,7 +27,7 @@
 	<statusbar-style>default</statusbar-style>
 	<statusbar-hidden>false</statusbar-hidden>
 	<fullscreen>false</fullscreen>
-	<navbar-hidden>false</navbar-hidden>
+	<navbar-hidden>true</navbar-hidden>
 	<analytics>true</analytics>
 	<guid>d2ce0724-a5c4-4328-9374-ef18adf4ab1f</guid>
 	<property name="ti.ui.defaultunit">system</property>
@@ -43,10 +43,10 @@
 		</orientations>
 	</iphone>
 	<android xmlns:android="http://schemas.android.com/apk/res/android">
-		<tool-api-level>8</tool-api-level>
-		<manifest android:installLocation="preferExternal">
+<!-- 		<tool-api-level>8</tool-api-level>
+		<manifest android:installLocation="auto">
 			<uses-sdk android:minSdkVersion="7" />
-		</manifest>
+		</manifest> -->
 	</android>
 	<mobileweb>
 		<precache/>

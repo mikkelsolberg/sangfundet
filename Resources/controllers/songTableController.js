@@ -1,8 +1,7 @@
 /**
  *
- * @param {Object} Cloud - Object holding the cloud data
  */
-exports.create = function(Cloud) {
+exports.create = function() {
 	self = {};
 	var osname = Ti.Platform.osname, version = Ti.Platform.version, height = Ti.Platform.displayCaps.platformHeight, width = Ti.Platform.displayCaps.platformWidth;
 
@@ -20,7 +19,6 @@ exports.create = function(Cloud) {
 	var ApplicationTabGroup = require('ui/common/ApplicationTabGroup');
 	self.tabGroup = new ApplicationTabGroup(Window);
 
-	self.Cloud = Cloud;
 	self.open = open;
 	self.close = close;
 
@@ -52,26 +50,10 @@ startAllTableListener = function() {
 			song : e.row.song,
 		});
 	});
-
-	// this.tabGroup.allWindow.table.addEventListener('touchstart', function(e) {
-		// e.row.container.left = 5;
-		// e.row.container.top = 5;
-		// e.source.backgroundColor = '#472B83';
-	// });
-	// this.tabGroup.allWindow.table.addEventListener('touchend', function(e) {
-		// e.row.container.left = 0;
-		// e.row.container.top = 0;
-		// e.source.backgroundColor = '#290671';
-	// });
-	//end eventListener
 }
 startDownloadedTableListener = function() {
 	Ti.API.info('Setup table listener');
-	Cloud = this.Cloud;
 	this.tabGroup.downloadWindow.table.addEventListener('click', function(e) {
-		Ti.API.info('Click: #' + e.row);
-		Ti.API.info('Cloud ' + Cloud);
-		Ti.API.info('Cloud ' + JSON.stringify(Cloud));
 		require('/files/songs').openSong(e.row.cloudName);
 	});
 	//end eventListener

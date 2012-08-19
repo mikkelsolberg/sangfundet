@@ -1,26 +1,29 @@
 function ApplicationWindow(title) {
+	Ti.API.info('Creating tabbed window for tables');
+	
 	var self = Ti.UI.createWindow({
-		title:title,
-		backgroundColor:'white'
+		title : title,
+		backgroundColor : '#8F6CD7', // Lys blå fra myTss,
+		exitOnClose : true,
 	});
 	
-	var button = Ti.UI.createButton({
-		height:44,
-		width:200,
-		title:L('openWindow'),
-		top:20
-	});
-	self.add(button);
-	
-	button.addEventListener('click', function() {
-		//containingTab attribute must be set by parent tab group on
-		//the window for this work
-		self.containingTab.open(Ti.UI.createWindow({
-			title: L('newWindow'),
-			backgroundColor: 'white'
-		}));
-	});
-	
+	var Songs = require('/files/songs');
+	var songs = Songs.getSongs();
+
+	var Table = require('/ui/common/table');
+	var table;
+	if (title == 'Favoritter') {
+		favorites = Songs.getFavorites(songs);
+		table = new Table(favorites);
+	} else if (title == 'Nedlastede') {
+		offlines = Songs.getAvailableOfflines(songs);
+		table = new Table(offlines);
+	} else {
+		table = new Table(songs);
+	}
+	self.add(table);
+	self.table = table;
+
 	return self;
 };
 

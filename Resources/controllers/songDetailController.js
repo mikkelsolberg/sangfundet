@@ -1,8 +1,10 @@
 /**
  * @author Mikkel Solberg
  */
-exports.create = function(Cloud, song) {
-	self = {};
+self = {};
+
+exports.create = function(song) {
+
 	var osname = Ti.Platform.osname, version = Ti.Platform.version, height = Ti.Platform.displayCaps.platformHeight, width = Ti.Platform.displayCaps.platformWidth;
 
 	//considering tablet to have one dimension over 900px - this is imperfect, so you should feel free to decide
@@ -17,27 +19,26 @@ exports.create = function(Cloud, song) {
 	}
 
 	self.Window = new Window(song);
-	self.Cloud = Cloud;
 	self.open = open;
 	self.close = close;
-	
-	
 
 	handleButtons.call(self);
 	handleBackButton.call(self);
-	handleOrientationChange.call(self);
-	handleProgressBar.call(self);
 
 	return self;
 }
 open = function() {
-	Ti.App.addEventListener('ui:downloadComplete', downloadCompleted);
+	Ti.App.addEventListener('app:download:complete', downloadCompleted);
+	Ti.App.addEventListener('app:download:progress', updateProgressBar);
+	Ti.Gesture.addEventListener('orientationchange', onOrientationChange);
 	this.Window.open();
 	this.Window.progressBar.hide();
 }
 close = function() {
+	Ti.Gesture.removeEventListener('orientationchange', onOrientationChange);
 	this.Window.close();
-	Ti.App.removeEventListener('ui:downloadComplete', downloadCompleted);
+	Ti.App.removeEventListener('app:download:complete', downloadCompleted);
+	Ti.App.removeEventListener('app:download:progress', updateProgressBar);
 }
 handleButtons = function() {
 	var Songs = require('/files/songs');
@@ -52,8 +53,8 @@ handleButtons = function() {
 		Ti.API.info('Download-button: CLICK');
 		if (!Songs.isAvailableOffline(e.source.songTitle)) {
 			//The song must be downloaded
+			progressBar.setValue(0);
 			progressBar.show();
-			
 		}
 
 		var available = Songs.toggleAvailableOffline(e.source.songTitle);
@@ -61,15 +62,18 @@ handleButtons = function() {
 	});
 
 	this.Window.openButton.addEventListener('click', function(e) {
+		if (!Songs.isAvailableOffline(e.source.songTitle)) {
+			//The song must be downloaded
+			progressBar.value = 0;
+			progressBar.show();
+		}
 		Songs.openSong(e.source.songTitle);
 	});
 }
 downloadCompleted = function(e) {
-	button = e.source;
 	Ti.API.info('songDetail: Event : download complete');
-	progressBar.hide();
-	button.backgroundImage = '/images/download_disable_icon3.png';
-	Ti.App.removeEventListener('ui:downloadComplete', downloadCompleted);
+	self.Window.downloadComplete();
+	Ti.App.removeEventListener('app:downloadComplete', downloadCompleted);
 }
 handleBackButton = function() {
 	this.Window.addEventListener('android:back', function(e) {
@@ -78,23 +82,13 @@ handleBackButton = function() {
 		});
 	});
 }
-handleOrientationChange = function() {
-	var Window = this.Window;
-	Ti.App.addEventListener('app:orientation:songDetailWindow', function(e) {
-		var screenWidth = Ti.Platform.displayCaps.platformWidth;
-		Window.favoriteButton.left = (screenWidth - 4 * 55) / 5;
-		Window.downloadButton.left = (screenWidth - 4 * 55) / 5;
-		Window.openButton.left = (screenWidth - 4 * 55) / 5;
-	});
+onOrientationChange = function() {
+	self.Window.orientationChange();
 }
-handleProgressBar = function() {
-	progressBar = this.Window.progressBar;
-	updateProgressBar = function(e) {
-		Ti.API.info('Updating progress bar');
-
-		progressBar.value = e.progress;
-	};
-	//TODO cloudname inn i eventnavn
-	Ti.App.addEventListener('download:progress', updateProgressBar);
-
-}
+updateProgressBar = function(e) {
+	Ti.API.info('Updating progress bar');
+	var downloaded = e.filesize * e.progress;
+	self.Window.progressBar.value = e.progress;
+	//Does not work, Titanium bug?
+	self.Window.progressBar.setMessage('Laster ned ' + downloaded + '/' + e.fileszie + ' kb');
+};

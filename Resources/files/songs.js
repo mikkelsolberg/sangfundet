@@ -10,6 +10,26 @@ var Cloud = require('ti.cloud');
 getSongs = function() {
 	var songs = new Array();
 	songs.push({
+		title : 'Alle mann hadde fota',
+		voices : {
+			A2 : 'G',
+			A1 : 'D',
+			S2 : 'G',
+			S1 : 'B',
+		},
+		cloudName : 'allemannhaddefota',
+	});
+	songs.push({
+		title : 'Bendik og Årolilja',
+		voices : {
+			A2 : 'G',
+			A1 : 'D',
+			S2 : 'G',
+			S1 : 'B',
+		},
+		cloudName : 'bendikogarolilja',
+	});
+	songs.push({
 		title : 'Boar\'s Head Carol',
 		voices : {
 			B2 : 'G',
@@ -18,6 +38,16 @@ getSongs = function() {
 			T1 : 'B',
 		},
 		cloudName : 'boarsheadcarol',
+	});
+	songs.push({
+		title : 'Bruces\' Philosophers song',
+		voices : {
+			B2 : 'G',
+			B1 : 'D',
+			T2 : 'G',
+			T1 : 'B',
+		},
+		cloudName : 'brucephilosopherssong',
 	});
 	songs.push({
 		title : 'Brudeferden',
@@ -58,6 +88,46 @@ getSongs = function() {
 			T1 : 'B',
 		},
 		cloudName : 'einkonig',
+	});
+	songs.push({
+		title : 'Fanfare, hymne og fanfare',
+		voices : {
+			B2 : 'G',
+			B1 : 'D',
+			T2 : 'G',
+			T1 : 'B',
+		},
+		cloudName : 'fanfare',
+	});
+	songs.push({
+		title : 'Finsk snapsvise',
+		voices : {
+			B2 : 'G',
+			B1 : 'D',
+			T2 : 'G',
+			T1 : 'B',
+		},
+		cloudName : 'finsksnapsvise',
+	});
+	songs.push({
+		title : 'Friseglarens sång',
+		voices : {
+			B2 : 'G',
+			B1 : 'D',
+			T2 : 'G',
+			T1 : 'B',
+		},
+		cloudName : 'friseglarenssang',
+	});
+	songs.push({
+		title : 'Fædrelandssangen',
+		voices : {
+			B2 : 'G',
+			B1 : 'D',
+			T2 : 'G',
+			T1 : 'B',
+		},
+		cloudName : 'fedrelandssangen',
 	});
 	songs.push({
 		title : 'Gambrinus-visen',
@@ -110,6 +180,26 @@ getSongs = function() {
 		cloudName : 'helangar',
 	});
 	songs.push({
+		title : 'Hiiden orjien laulu ',
+		voices : {
+			B2 : 'G',
+			B1 : 'D',
+			T2 : 'G',
+			T1 : 'B',
+		},
+		cloudName : 'hiidenorjienlaulu',
+	});
+	songs.push({
+		title : 'I rosenlund ',
+		voices : {
+			A2 : 'G',
+			A1 : 'D',
+			S2 : 'G',
+			S1 : 'B',
+		},
+		cloudName : 'irosenlund',
+	});
+	songs.push({
 		title : 'Kvarten',
 		voices : {
 			B2 : 'G',
@@ -118,6 +208,16 @@ getSongs = function() {
 			T1 : 'B',
 		},
 		cloudName : 'kvarten',
+	});
+	songs.push({
+		title : 'Käraste bröder',
+		voices : {
+			B2 : 'G',
+			B1 : 'D',
+			T2 : 'G',
+			T1 : 'B',
+		},
+		cloudName : 'karestebroder',
 	});
 	songs.push({
 		title : 'Madrigal',
@@ -150,6 +250,26 @@ getSongs = function() {
 		cloudName : 'metsameihen',
 	});
 	songs.push({
+		title : 'Mitt hjerte er ditt',
+		voices : {
+			A2 : 'G',
+			A1 : 'D',
+			S2 : 'G',
+			S1 : 'B',
+		},
+		cloudName : 'mitthjerteerditt',
+	});
+	songs.push({
+		title : ' Nå, ä nu alla',
+		voices : {
+			B2 : 'G',
+			B1 : 'D',
+			T2 : 'G',
+			T1 : 'B',
+		},
+		cloudName : 'nuanualla',
+	});
+	songs.push({
 		title : 'Olav Trygvason',
 		voices : {
 			B2 : 'G',
@@ -158,6 +278,16 @@ getSongs = function() {
 			T1 : 'B',
 		},
 		cloudName : 'olavtrygvason',
+	});
+	songs.push({
+		title : 'Pål sine hønur',
+		voices : {
+			B2 : 'G',
+			B1 : 'D',
+			T2 : 'G',
+			T1 : 'B',
+		},
+		cloudName : 'palsinehoner',
 	});
 	songs.push({
 		title : 'Studentsång',
@@ -179,6 +309,11 @@ getSongs = function() {
 		},
 		cloudName : 'osterland',
 	});
+	
+	for (var i = 0; i < songs.length ; i++){
+		songs[i].favorite = isFavorite(songs[i].cloudName);
+	}
+	
 	return songs;
 }
 getFavorites = function(songs) {
@@ -249,7 +384,6 @@ toggleAvailableOffline = function(cloudName) {
 	Ti.API.info('Returning: ' + isAvailableOffline(cloudName));
 	return isAvailableOffline(cloudName);
 }
-
 //===================================
 //========OTHER FUNCTIONS ===========
 //===================================
@@ -287,15 +421,16 @@ downloadSong = function(cloudName, temporaryFile, openAfterDownload) {
 		}
 	});
 }
-
 deleteSong = function(cloudName) {
 	Ti.API.info('Deleting song: ' + cloudName);
 	var filename = Ti.Filesystem.externalStorageDirectory + Ti.Filesystem.separator + cloudName + '.pdf';
 	var file = Ti.Filesystem.getFile(filename);
 	file.deleteFile();
 }
-
 openPDF = function(file) {
+	if(f.downloaded){
+		downloadComplete(f);
+	}
 	Ti.API.info('==============FILE OPEN==========');
 	Ti.API.info('File path : ' + file.nativePath);
 	Ti.API.info('=================================');
@@ -304,7 +439,7 @@ openPDF = function(file) {
 downloadComplete = function(file) {
 	Ti.API.info('Download complete!');
 	Ti.App.Properties.setBool('songs.offline.' + file.cloudName, true);
-	Ti.App.fireEvent('ui:downloadComplete', {
+	Ti.App.fireEvent('app:download:complete', {
 		cloudName : file.cloudName,
 	});
 }

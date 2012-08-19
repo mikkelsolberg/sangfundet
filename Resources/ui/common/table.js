@@ -24,7 +24,6 @@ update = function(sanger) {
 	this.setData(createRows(sanger));
 }
 createRows = function(sanger) {
-	var Songs = require('/files/songs');
 	tableRowHeight = 60;
 	rowContainerHeight = tableRowHeight - 4;
 	var rows = [];
@@ -90,7 +89,7 @@ createRows = function(sanger) {
 		});
 
 		//Add star if favorite
-		var isFavorite = Songs.isFavorite(sanger[i].cloudName);
+		var isFavorite = sanger[i].favorite;
 		if (isFavorite) {
 			var starView = Ti.UI.createImageView({
 				height : 40,
